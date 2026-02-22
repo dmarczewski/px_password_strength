@@ -11,4 +11,4 @@ $labels['passwordrulelower'] = 'contains a lowercase letter';
 $labels['passwordruleupper'] = 'contains an uppercase letter';
 $labels['passwordruledigit'] = 'contains a number';
 $labels['passwordrulespecial'] = 'contains a special character';
-$labels['passwordrulediacritics'] = 'does not contain diacritics (e.g. ą, ź, ś, ć)';
+$labels['passwordrulediacritics'] = 'only standard characters (no diacritics, e.g. é, ñ, ü, or emojis)';

@@ -75,13 +75,16 @@
             return;
         }
 
-        var form = q('#password-form');
-        var newpass = q('#newpasswd');
-        var confpass = q('#confpasswd');
+        var form = q('#password-form') || q('form[action*="password"]');
+        var newpass = q('#newpasswd') || q('input[name="_newpasswd"]');
+        var confpass = q('#confpasswd') || q('input[name="_confpasswd"]');
 
         if (!form || !newpass) {
+            console.debug('[px_password_strength] Password form or input not found. UI overlay disabled.');
             return;
         }
+
+        form.classList.add('px-pwd-form-active');
 
         if (cfg.hide_native_rules) {
             qa('#ruleslist').forEach(function (el) {
@@ -177,7 +180,8 @@
             special: function (value) { return /[^a-zA-Z0-9]/.test(value); },
             diacritics: function (value) {
                 if (!value.length) return false;
-                return !/[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/u.test(value);
+                // Allow only standard ASCII printables (rejects diacritics, emoji, other alphabets)
+                return /^[\x20-\x7E]+$/.test(value);
             }
         };
 
@@ -223,12 +227,19 @@
             meterValue.className = 'px-pwd-meter-value' + (level ? ' is-' + level : '');
         }
 
-        newpass.addEventListener('input', update);
-        newpass.addEventListener('keyup', update);
-        if (confpass) {
-            confpass.addEventListener('input', function () {
+        function checkMismatch() {
+            if (confpass) {
                 form.classList.toggle('px-pwd-confirm-mismatch', !!confpass.value && confpass.value !== newpass.value);
-            });
+            }
+        }
+
+        newpass.addEventListener('input', function () {
+            update();
+            checkMismatch();
+        });
+
+        if (confpass) {
+            confpass.addEventListener('input', checkMismatch);
         }
 
         update();
