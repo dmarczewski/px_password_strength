@@ -1,0 +1,30 @@
+PX Password Strength (visual overlay for Roundcube password plugin)
+===============================================================
+
+This plugin adds a live password strength bar and a requirements checklist
+to the default Roundcube `password` plugin form in:
+
+- Settings -> Password (`?_task=settings&_action=plugin.password`)
+
+It is a visual overlay only. Server-side validation is still handled by the
+Roundcube `password` plugin and its configured driver.
+
+Installation
+------------
+
+1. Enable plugin in `config/config.inc.php` after `password`:
+
+   $config['plugins'] = [..., 'password', 'px_password_strength'];
+
+2. Copy config template (optional):
+
+   cp plugins/px_password_strength/config.inc.php.dist plugins/px_password_strength/config.inc.php
+
+Notes
+-----
+
+- The overlay reads `password_minimum_length` from the `password` plugin config.
+- Checklist items (lower/upper/digit/special/diacritics) are configurable in
+  `plugins/px_password_strength/config.inc.php`.
+- By default, the native `password` plugin rules list is hidden to avoid
+  duplicate UI (`px_password_strength_hide_native_rules = true`).

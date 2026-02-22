@@ -1,0 +1,18 @@
+<?php
+
+// Visual overlay for the default Roundcube password plugin form.
+$config['px_password_strength_enabled'] = true;
+
+// Hide native `password` plugin rules list (#ruleslist) to avoid duplicates.
+$config['px_password_strength_hide_native_rules'] = true;
+
+// Show text label next to the strength bar ("Weak / Medium / Strong").
+$config['px_password_strength_show_strength_label'] = true;
+
+// Visual checklist rules (frontend only). Server-side validation still depends on
+// the `password` plugin driver configuration.
+$config['px_password_strength_require_lower'] = true;
+$config['px_password_strength_require_upper'] = true;
+$config['px_password_strength_require_digit'] = true;
+$config['px_password_strength_require_special'] = true;
+$config['px_password_strength_forbid_diacritics'] = true;
