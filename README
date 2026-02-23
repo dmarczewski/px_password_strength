@@ -6,8 +6,10 @@ to the default Roundcube `password` plugin form in:
 
 - Settings -> Password (`?_task=settings&_action=plugin.password`)
 
-It is a visual overlay only. Server-side validation is still handled by the
-Roundcube `password` plugin and its configured driver.
+It is primarily a visual overlay. Server-side validation is still handled by the
+Roundcube `password` plugin and its configured driver, but this plugin may also
+auto-configure `password_strength_driver=px_strength` (and a default
+`password_minimum_score`) when those values are not explicitly set.
 
 Installation
 ------------
@@ -23,8 +25,15 @@ Installation
 Notes
 -----
 
-- The overlay reads `password_minimum_length` from the `password` plugin config.
-- Checklist items (lower/upper/digit/special/diacritics) are configurable in
-  `plugins/px_password_strength/config.inc.php`.
+- The overlay uses a local policy from `plugins/px_password_strength/config.inc.php`
+  (`px_password_strength_minimum_length`, `px_password_strength_require_*`,
+  `px_password_strength_forbid_diacritics`) unless shared/global override keys
+  `px_password_policy_*` are set in `config/config.inc.php`.
 - By default, the native `password` plugin rules list is hidden to avoid
   duplicate UI (`px_password_strength_hide_native_rules = true`).
+- If `password_strength_driver` is unset (or already `px_strength`), the plugin
+  sets `password_strength_driver=px_strength` and defaults
+  `password_minimum_score` to `2`.
+- When local `px_password_strength_minimum_length` (or shared/global
+  `px_password_policy_minimum_length`) is configured, the plugin also exposes the
+  effective value to the `password` plugin backend (`password_minimum_length`).
