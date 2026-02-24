@@ -22,6 +22,11 @@ $config['px_password_strength_require_digit'] = true;
 $config['px_password_strength_require_special'] = true;
 $config['px_password_strength_forbid_diacritics'] = true;
 
+// Auto-configuration (applied at init unless admin overrides):
+// - password_strength_driver is set to 'px_strength'
+// - password_minimum_score is set to 2 (if not explicitly configured)
+// These ensure server-side validation matches the visual checklist.
+
 // Shared/global override example (set in config/config.inc.php, not here):
 // $config['px_password_policy_minimum_length'] = 12;
 // $config['px_password_policy_require_lower'] = true;

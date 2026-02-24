@@ -106,6 +106,8 @@
         var panel = document.createElement('div');
         panel.id = 'px-password-strength-panel';
         panel.className = 'px-password-strength-panel';
+        panel.setAttribute('role', 'region');
+        panel.setAttribute('aria-label', labels.title || 'Password requirements');
 
         var title = document.createElement('div');
         title.className = 'px-pwd-title';
@@ -127,6 +129,8 @@
         meterValue.className = 'px-pwd-meter-value';
         meterValue.id = 'px-pwd-meter-value';
         meterValue.textContent = '';
+        meterValue.setAttribute('aria-live', 'polite');
+        meterValue.setAttribute('aria-atomic', 'true');
         if (!cfg.show_strength_label) {
             meterValue.style.display = 'none';
         }
@@ -136,6 +140,11 @@
 
         var meterTrack = document.createElement('div');
         meterTrack.className = 'px-pwd-meter-track';
+        meterTrack.setAttribute('role', 'progressbar');
+        meterTrack.setAttribute('aria-valuemin', '0');
+        meterTrack.setAttribute('aria-valuemax', '100');
+        meterTrack.setAttribute('aria-valuenow', '0');
+        meterTrack.setAttribute('aria-label', labels.strength || 'Strength');
 
         var meterBar = document.createElement('div');
         meterBar.className = 'px-pwd-meter-bar';
@@ -165,6 +174,12 @@
 
         panel.appendChild(rulesList);
 
+        // Cache rule elements for keystroke handler (avoid DOM queries per keystroke)
+        var ruleElements = {};
+        activeRules.forEach(function (key) {
+            ruleElements[key] = q('.px-pwd-rule-' + key, panel);
+        });
+
         var anchor = findInsertAnchor(newpass);
         if (anchor && anchor.node) {
             insertAfter(anchor.node, panel);
@@ -191,7 +206,7 @@
             var passed = 0;
 
             activeRules.forEach(function (key) {
-                var li = q('.px-pwd-rule-' + key, panel);
+                var li = ruleElements[key];
                 var ok = validators[key] ? !!validators[key](value) : false;
 
                 if (li) {
@@ -211,6 +226,7 @@
                 meterBar.classList.add('is-' + level);
             }
             meterBar.style.width = (value.length === 0 ? 0 : Math.max(percent, 10)) + '%';
+            meterTrack.setAttribute('aria-valuenow', String(value.length === 0 ? 0 : percent));
 
             if (!cfg.show_strength_label) {
                 return;

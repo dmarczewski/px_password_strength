@@ -36,7 +36,7 @@ class px_password_strength extends rcube_plugin
         $current_driver = $this->rc->config->get('password_strength_driver');
         if (!$current_driver || $current_driver === 'px_strength') {
             $this->rc->config->set('password_strength_driver', 'px_strength');
-            if (!(int) $this->rc->config->get('password_minimum_score')) {
+            if ($this->rc->config->get('password_minimum_score', null) === null) {
                 $this->rc->config->set('password_minimum_score', 2);
             }
         }
@@ -167,6 +167,10 @@ class px_password_strength extends rcube_plugin
 
         if (is_bool($value)) {
             return $value;
+        }
+
+        if (!is_scalar($value)) {
+            return (bool) $default;
         }
 
         if (is_string($value)) {

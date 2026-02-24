@@ -1,20 +1,19 @@
-PX Password Strength (visual overlay for Roundcube password plugin)
-===============================================================
+PX Password Strength
+====================
 
-This plugin adds a live password strength bar and a requirements checklist
-to the default Roundcube `password` plugin form in:
+Visual overlay for the Roundcube `password` plugin. Adds a live password
+strength bar and requirements checklist to Settings → Password.
 
-- Settings -> Password (`?_task=settings&_action=plugin.password`)
-
-It is primarily a visual overlay. Server-side validation is still handled by the
-Roundcube `password` plugin and its configured driver, but this plugin may also
-auto-configure `password_strength_driver=px_strength` (and a default
-`password_minimum_score`) when those values are not explicitly set.
+Features
+--------
+- Strength bar (weak / medium / strong) updated as user types.
+- Checklist of password rules (length, lower, upper, digit, special, diacritics).
+- Auto-configures `password_strength_driver=px_strength` if not explicitly set.
+- Hides native `password` plugin rules list to avoid duplicate UI.
 
 Installation
 ------------
-
-1. Enable plugin in `config/config.inc.php` after `password`:
+1. Enable plugin in `config/config.inc.php` (after `password`):
 
    $config['plugins'] = [..., 'password', 'px_password_strength'];
 
@@ -22,18 +21,35 @@ Installation
 
    cp plugins/px_password_strength/config.inc.php.dist plugins/px_password_strength/config.inc.php
 
+Password policy
+---------------
+Local policy keys in `config.inc.php`:
+- `px_password_strength_minimum_length` (default: 8)
+- `px_password_strength_require_lower` / `_upper` / `_digit` / `_special`
+- `px_password_strength_forbid_diacritics`
+
+Shared/global override (set in `config/config.inc.php`):
+- `px_password_policy_minimum_length`
+- `px_password_policy_require_lower` / `_upper` / `_digit` / `_special`
+- `px_password_policy_forbid_diacritics`
+
+When global keys are set, they override local keys for both
+`px_password_strength` and `px_password_recovery`.
+
+Key options
+-----------
+| Option | Default | Description |
+|--------|---------|-------------|
+| `px_password_strength_enabled` | `true` | Master switch |
+| `px_password_strength_hide_native_rules` | `true` | Hide native `#ruleslist` |
+| `px_password_strength_show_strength_label` | `true` | Show text label on bar |
+| `px_password_strength_minimum_length` | `8` | Minimum password length |
+
 Notes
 -----
-
-- The overlay uses a local policy from `plugins/px_password_strength/config.inc.php`
-  (`px_password_strength_minimum_length`, `px_password_strength_require_*`,
-  `px_password_strength_forbid_diacritics`) unless shared/global override keys
-  `px_password_policy_*` are set in `config/config.inc.php`.
-- By default, the native `password` plugin rules list is hidden to avoid
-  duplicate UI (`px_password_strength_hide_native_rules = true`).
-- If `password_strength_driver` is unset (or already `px_strength`), the plugin
-  sets `password_strength_driver=px_strength` and defaults
-  `password_minimum_score` to `2`.
-- When local `px_password_strength_minimum_length` (or shared/global
-  `px_password_policy_minimum_length`) is configured, the plugin also exposes the
-  effective value to the `password` plugin backend (`password_minimum_length`).
+- This plugin is primarily a visual overlay. Server-side validation is still
+  handled by the `password` plugin and its configured driver.
+- If `password_strength_driver` is unset, the plugin auto-sets it to
+  `px_strength` with `password_minimum_score=2`.
+- When local or shared minimum length is configured, the plugin exposes
+  the effective value to the `password` plugin backend (`password_minimum_length`).
