@@ -15,3 +15,4 @@ $labels['passwordruleupper'] = 'содержит заглавную букву';
 $labels['passwordruledigit'] = 'содержит цифру';
 $labels['passwordrulespecial'] = 'содержит специальный символ';
 $labels['passwordrulediacritics'] = 'только стандартные символы (без диакритики, напр. ё, й, é, и без эмодзи)';
+$labels['generatepassword'] = 'Сгенерировать пароль';

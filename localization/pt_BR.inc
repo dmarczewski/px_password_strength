@@ -15,3 +15,4 @@ $labels['passwordruleupper'] = 'contém uma letra maiúscula';
 $labels['passwordruledigit'] = 'contém um número';
 $labels['passwordrulespecial'] = 'contém um caractere especial';
 $labels['passwordrulediacritics'] = 'apenas caracteres padrão (sem diacríticos, ex.: á, ã, ç, ê, nem emojis)';
+$labels['generatepassword'] = 'Gerar senha';

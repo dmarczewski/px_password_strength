@@ -76,6 +76,7 @@ class px_password_strength extends rcube_plugin
             'digit' => (string) $this->gettext('passwordruledigit'),
             'special' => (string) $this->gettext('passwordrulespecial'),
             'diacritics' => (string) $this->gettext('passwordrulediacritics'),
+            'generate' => (string) $this->gettext('generatepassword'),
         ];
 
         $config = [

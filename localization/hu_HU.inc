@@ -15,3 +15,4 @@ $labels['passwordruleupper'] = 'tartalmaz nagybetűt';
 $labels['passwordruledigit'] = 'tartalmaz számjegyet';
 $labels['passwordrulespecial'] = 'tartalmaz speciális karaktert';
 $labels['passwordrulediacritics'] = 'csak szabványos karakterek (ékezet nélkül, pl. á, é, ő, ű, és emoji nélkül)';
+$labels['generatepassword'] = 'Jelszó generálása';

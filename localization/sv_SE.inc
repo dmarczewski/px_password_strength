@@ -15,3 +15,4 @@ $labels['passwordruleupper'] = 'innehåller en stor bokstav';
 $labels['passwordruledigit'] = 'innehåller en siffra';
 $labels['passwordrulespecial'] = 'innehåller ett specialtecken';
 $labels['passwordrulediacritics'] = 'endast standardtecken (inga diakritiska tecken, t.ex. å, ä, ö, eller emojis)';
+$labels['generatepassword'] = 'Generera lösenord';

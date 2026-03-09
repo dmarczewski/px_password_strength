@@ -14,3 +14,4 @@ $labels['passwordruleupper'] = 'zawiera dużą literę';
 $labels['passwordruledigit'] = 'zawiera cyfrę';
 $labels['passwordrulespecial'] = 'zawiera znak specjalny';
 $labels['passwordrulediacritics'] = 'tylko standardowe znaki (bez znaków diakrytycznych, np. ą, ś, ć, czy emoji)';
+$labels['generatepassword'] = 'Wygeneruj hasło';

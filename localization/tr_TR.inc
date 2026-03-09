@@ -15,3 +15,4 @@ $labels['passwordruleupper'] = 'büyük harf içerir';
 $labels['passwordruledigit'] = 'rakam içerir';
 $labels['passwordrulespecial'] = 'özel karakter içerir';
 $labels['passwordrulediacritics'] = 'yalnızca standart karakterler (aksanlı harf yok; örn. ğ, ş, İ, ü veya emoji)';
+$labels['generatepassword'] = 'Parola oluştur';

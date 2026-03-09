@@ -12,3 +12,4 @@ $labels['passwordruleupper'] = 'contains an uppercase letter';
 $labels['passwordruledigit'] = 'contains a number';
 $labels['passwordrulespecial'] = 'contains a special character';
 $labels['passwordrulediacritics'] = 'only standard characters (no diacritics, e.g. é, ñ, ü, or emojis)';
+$labels['generatepassword'] = 'Generate password';

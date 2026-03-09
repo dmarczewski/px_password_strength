@@ -15,3 +15,4 @@ $labels['passwordruleupper'] = '包含大寫字母';
 $labels['passwordruledigit'] = '包含數字';
 $labels['passwordrulespecial'] = '包含特殊字元';
 $labels['passwordrulediacritics'] = '僅限標準字元（不含附加變音符號字母，例如 ā、ǒ、ǚ，也不含表情符號）';
+$labels['generatepassword'] = '產生密碼';

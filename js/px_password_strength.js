@@ -76,6 +76,7 @@
         }
 
         var form = q('#password-form') || q('form[action*="password"]');
+        var curpass = q('#curpasswd') || q('input[name="_curpasswd"]');
         var newpass = q('#newpasswd') || q('input[name="_newpasswd"]');
         var confpass = q('#confpasswd') || q('input[name="_confpasswd"]');
 
@@ -180,6 +181,51 @@
             ruleElements[key] = q('.px-pwd-rule-' + key, panel);
         });
 
+        // -- Eye toggle (show/hide password) --
+        function addEye(input) {
+            if (!input) return;
+            var wrapper = input.parentElement;
+            if (wrapper) {
+                var tag = wrapper.tagName;
+                if (tag === 'TD' || tag === 'DIV' || wrapper.classList.contains('input-group')) {
+                    wrapper.style.position = 'relative';
+                }
+            }
+            input.style.paddingRight = '35px';
+
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'px-pwd-toggle-password';
+            btn.tabIndex = -1;
+            btn.innerHTML = '<span class="icon"></span>';
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    btn.classList.add('pwd-visible');
+                } else {
+                    input.type = 'password';
+                    btn.classList.remove('pwd-visible');
+                }
+            });
+            input.parentNode.appendChild(btn);
+        }
+        addEye(curpass);
+        addEye(newpass);
+        addEye(confpass);
+
+        // -- Generate password button --
+        var genWrap = document.createElement('div');
+        genWrap.className = 'px-pwd-generate-wrap';
+
+        var genBtn = document.createElement('button');
+        genBtn.type = 'button';
+        genBtn.className = 'px-pwd-generate-btn';
+        genBtn.innerHTML = '<span class="icon"></span><span class="text">' +
+            (labels.generate || 'Generate password') + '</span>';
+        genWrap.appendChild(genBtn);
+        panel.appendChild(genWrap);
+
         var anchor = findInsertAnchor(newpass);
         if (anchor && anchor.node) {
             insertAfter(anchor.node, panel);
@@ -259,5 +305,61 @@
         }
 
         update();
+
+        // -- Generate password handler --
+        genBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var charsLow = 'abcdefghijklmnopqrstuvwxyz';
+            var charsUp = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var charsNum = '0123456789';
+            var charsSpec = '!@#$%^&*()_+~`|}{[]:;?><,./-=';
+            var allChars = charsLow + charsUp + charsNum + charsSpec;
+
+            var secureRandom = function (max) {
+                var array = new Uint32Array(1);
+                window.crypto.getRandomValues(array);
+                return array[0] % max;
+            };
+
+            var pass = '';
+            if (rulesCfg.lower) pass += charsLow.charAt(secureRandom(charsLow.length));
+            if (rulesCfg.upper) pass += charsUp.charAt(secureRandom(charsUp.length));
+            if (rulesCfg.digit) pass += charsNum.charAt(secureRandom(charsNum.length));
+            if (rulesCfg.special) pass += charsSpec.charAt(secureRandom(charsSpec.length));
+
+            var targetLen = Math.max(minLength, 12);
+            var extraCount = Math.max(0, targetLen - pass.length);
+            for (var i = 0; i < extraCount; i++) {
+                pass += allChars.charAt(secureRandom(allChars.length));
+            }
+
+            // Shuffle
+            var passArr = pass.split('');
+            for (var j = passArr.length - 1; j > 0; j--) {
+                var k = secureRandom(j + 1);
+                var temp = passArr[j];
+                passArr[j] = passArr[k];
+                passArr[k] = temp;
+            }
+            pass = passArr.join('');
+
+            newpass.value = pass;
+            if (confpass) confpass.value = pass;
+
+            // Briefly reveal the generated password, then hide
+            if (newpass.type === 'password') {
+                newpass.type = 'text';
+                var newToggle = q('.px-pwd-toggle-password', newpass.parentNode);
+                if (newToggle) newToggle.classList.add('pwd-visible');
+
+                setTimeout(function () {
+                    newpass.type = 'password';
+                    if (newToggle) newToggle.classList.remove('pwd-visible');
+                }, 1000);
+            }
+
+            update();
+            checkMismatch();
+        });
     });
 })();

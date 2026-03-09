@@ -15,3 +15,4 @@ $labels['passwordruleupper'] = 'bevat een hoofdletter';
 $labels['passwordruledigit'] = 'bevat een cijfer';
 $labels['passwordrulespecial'] = 'bevat een speciaal teken';
 $labels['passwordrulediacritics'] = 'alleen standaardtekens (geen diakritische tekens, bijv. é, ë, ï, á, of emoji\'s)';
+$labels['generatepassword'] = 'Wachtwoord genereren';
