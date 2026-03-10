@@ -21,6 +21,14 @@ Installation
 
    cp plugins/px_password_strength/config.inc.php.dist plugins/px_password_strength/config.inc.php
 
+3. Bridge template with full target path structure is included here:
+
+   plugins/px_password_strength/bridge/plugins/password/drivers/px_strength.php
+
+   Deploy/copy it to:
+
+   plugins/password/drivers/px_strength.php
+
 Password policy
 ---------------
 Local policy keys in `config.inc.php`:
@@ -44,6 +52,8 @@ Key options
 | `px_password_strength_hide_native_rules` | `true` | Hide native `#ruleslist` |
 | `px_password_strength_show_strength_label` | `true` | Show text label on bar |
 | `px_password_strength_minimum_length` | `8` | Minimum password length |
+| `px_password_strength_bridge_path` | `plugins/password/drivers/px_strength.php` | Relative path to required bridge file |
+| `px_password_strength_show_bridge_warning` | `true` | Show technical warning when bridge file is missing |
 
 Notes
 -----
@@ -53,3 +63,9 @@ Notes
   `px_strength` with `password_minimum_score=2`.
 - When local or shared minimum length is configured, the plugin exposes
   the effective value to the `password` plugin backend (`password_minimum_length`).
+- Roundcube `password` plugin loads custom strength drivers only from
+  `plugins/password/drivers/<name>.php`. For `px_strength` this means
+  `plugins/password/drivers/px_strength.php` must exist (bridge file).
+- If bridge is missing and `password_strength_driver=px_strength`, this plugin
+  logs a technical error and can show a warning on Settings -> Password
+  (`px_password_strength_show_bridge_warning`).

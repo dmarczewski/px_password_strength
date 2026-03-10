@@ -27,6 +27,20 @@ $config['px_password_strength_forbid_diacritics'] = true;
 // - password_minimum_score is set to 2 (if not explicitly configured)
 // These ensure server-side validation matches the visual checklist.
 
+// Bridge file required by Roundcube password plugin loader for custom strength driver.
+// Keep this file present (it can be a tiny bridge/require file):
+// plugins/password/drivers/px_strength.php
+// Template copy is bundled in:
+// plugins/px_password_strength/bridge/plugins/password/drivers/px_strength.php
+// You can override the relative path here if needed.
+$config['px_password_strength_bridge_path'] = 'plugins/password/drivers/px_strength.php';
+
+// Show technical warning on Settings -> Password page when the bridge is missing.
+$config['px_password_strength_show_bridge_warning'] = true;
+
+// Optional custom text for missing bridge warning (empty = built-in message).
+$config['px_password_strength_bridge_warning_text'] = '';
+
 // Shared/global override example (set in config/config.inc.php, not here):
 // $config['px_password_policy_minimum_length'] = 12;
 // $config['px_password_policy_require_lower'] = true;

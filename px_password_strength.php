@@ -12,6 +12,8 @@ class px_password_strength extends rcube_plugin
 
     private $rc;
     private $password_policy;
+    private $bridge_missing = false;
+    private $bridge_path = 'plugins/password/drivers/px_strength.php';
 
     public function init()
     {
@@ -41,6 +43,8 @@ class px_password_strength extends rcube_plugin
             }
         }
 
+        $this->check_bridge_requirements();
+
         $this->add_hook('render_page', [$this, 'render_page']);
     }
 
@@ -51,6 +55,10 @@ class px_password_strength extends rcube_plugin
 
         if ($template !== 'plugin' || ($action !== 'plugin.password' && $action !== 'plugin.password-save')) {
             return $args;
+        }
+
+        if ($this->bridge_missing && $this->cfg_bool('px_password_strength_show_bridge_warning', true)) {
+            $this->rc->output->command('display_message', $this->bridge_warning_message(), 'warning');
         }
 
         $this->add_texts('localization/');
@@ -102,6 +110,53 @@ class px_password_strength extends rcube_plugin
     private function cfg_bool($key, $default = false)
     {
         return $this->cfg_bool_value($key, $default);
+    }
+
+    private function check_bridge_requirements()
+    {
+        $driver = (string) $this->rc->config->get('password_strength_driver', '');
+        if ($driver !== 'px_strength') {
+            return;
+        }
+
+        $configured_path = trim((string) $this->rc->config->get(
+            'px_password_strength_bridge_path',
+            'plugins/password/drivers/px_strength.php'
+        ));
+        $relative_path = ltrim(str_replace('\\', '/', $configured_path), '/');
+        if ($relative_path === '') {
+            $relative_path = 'plugins/password/drivers/px_strength.php';
+        }
+
+        $this->bridge_path = $relative_path;
+
+        $absolute_path = defined('RCUBE_INSTALL_PATH')
+            ? rtrim((string) RCUBE_INSTALL_PATH, "/\\") . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $relative_path)
+            : str_replace('/', DIRECTORY_SEPARATOR, $relative_path);
+
+        if (is_file($absolute_path)) {
+            return;
+        }
+
+        $this->bridge_missing = true;
+
+        rcube::raise_error([
+            'code' => 600,
+            'file' => __FILE__,
+            'line' => __LINE__,
+            'message' => 'px_password_strength: missing password bridge file (' . $relative_path . ')',
+        ], true, false);
+    }
+
+    private function bridge_warning_message()
+    {
+        $custom = trim((string) $this->rc->config->get('px_password_strength_bridge_warning_text', ''));
+        if ($custom !== '') {
+            return $custom;
+        }
+
+        return 'px_password_strength: missing bridge file "' . $this->bridge_path
+            . '". Full server-side px_strength validation is unavailable until the bridge is restored.';
     }
 
     private function resolve_password_policy()
