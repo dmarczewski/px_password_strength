@@ -221,8 +221,14 @@
         var genBtn = document.createElement('button');
         genBtn.type = 'button';
         genBtn.className = 'px-pwd-generate-btn';
-        genBtn.innerHTML = '<span class="icon"></span><span class="text">' +
-            (labels.generate || 'Generate password') + '</span>';
+
+        var genIcon = document.createElement('span');
+        genIcon.className = 'icon';
+        var genText = document.createElement('span');
+        genText.className = 'text';
+        genText.textContent = labels.generate || 'Generate password';
+        genBtn.appendChild(genIcon);
+        genBtn.appendChild(genText);
         genWrap.appendChild(genBtn);
         panel.appendChild(genWrap);
 
