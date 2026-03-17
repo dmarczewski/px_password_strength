@@ -1,6 +1,5 @@
 <?php
 
-include __DIR__ . '/en_US.inc';
 
 // Localized labels with English fallback for any future keys.
 $labels['passwordrequirements'] = 'Parola gereksinimleri';

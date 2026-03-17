@@ -1,6 +1,5 @@
 <?php
 
-include __DIR__ . '/en_US.inc';
 
 $labels['passwordrequirements'] = 'Wymagania hasła';
 $labels['passwordstrength'] = 'Siła hasła';
