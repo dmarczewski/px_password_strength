@@ -1,4 +1,4 @@
-name: BRAIN quality gate (syntax)
+name: BRAIN quality gate
 
 on:
   pull_request:
@@ -50,3 +50,16 @@ jobs:
             node --check "$file"
             echo "OK: $file"
           done
+
+  policy-tests:
+    name: policy-tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout source without persisted credentials
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Run self-contained policy regression tests
+        run: php tests/brain_policy_test.php
